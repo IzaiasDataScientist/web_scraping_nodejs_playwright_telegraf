@@ -10,29 +10,35 @@ class Bet365 extends Strategy {
 
     async _nameCompetition() {
 
-        await this.browser.start()
+        try {                    
+            await this.browser.start()
 
-        await this.browser.page.goto('https://www.bet365.com/#/IP/B1');
-        await this.browser.page.waitForURL('https://www.bet365.com/#/IP/B1');
-        await this.browser.page.waitForTimeout(5000);
+            await this.browser.page.goto('https://www.bet365.com/#/IP/B1');
+            await this.browser.page.waitForURL('https://www.bet365.com/#/IP/B1');
+            await this.browser.page.waitForTimeout(5000);
 
-        await this.browser.page.setViewportSize({width: 1080, height: 1024});
+            await this.browser.page.setViewportSize({width: 1080, height: 1024});
 
-        await this.browser.page.locator('div .iip-IntroductoryPopup_Cross').click();
+            await this.browser.page.locator('div .iip-IntroductoryPopup_Cross').click();
 
-        await this.browser.page.waitForTimeout(5000)
+            await this.browser.page.waitForTimeout(5000)
 
-        let listTeamOne = await this.browser.page.locator(".ovm-FixtureDetailsTwoWay_TeamsWrapper > div:nth-child(1)").allTextContents()
-        let listTeamTwo = await this.browser.page.locator(".ovm-FixtureDetailsTwoWay_TeamsWrapper > div:nth-child(2)").allTextContents()
+            let listTeamOne = await this.browser.page.locator(".ovm-FixtureDetailsTwoWay_TeamsWrapper > div:nth-child(1)").allTextContents()
+            let listTeamTwo = await this.browser.page.locator(".ovm-FixtureDetailsTwoWay_TeamsWrapper > div:nth-child(2)").allTextContents()
 
-        let scoreTeamOne = await this.browser.page.locator("div .ovm-StandardScoresSoccer_TeamOne ").allTextContents()
-        let scoreTeamTwo = await this.browser.page.locator("div .ovm-StandardScoresSoccer_TeamTwo ").allTextContents()
+            let scoreTeamOne = await this.browser.page.locator("div .ovm-StandardScoresSoccer_TeamOne ").allTextContents()
+            let scoreTeamTwo = await this.browser.page.locator("div .ovm-StandardScoresSoccer_TeamTwo ").allTextContents()
 
-        return {
-            listTeamOne,
-            listTeamTwo,
-            scoreTeamOne,
-            scoreTeamTwo,
+            return {
+                listTeamOne,
+                listTeamTwo,
+                scoreTeamOne,
+                scoreTeamTwo,
+            };
+        } catch (error) {
+            console.error(`Erro ao carregar a página: ${error}`);
+        } finally {
+            await this.browser.close();
         }
     }
 
